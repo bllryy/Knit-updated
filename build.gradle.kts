@@ -14,7 +14,9 @@ plugins {
     id("dev.deftu.gradle.tools.publishing.maven")
 }
 
-apply(rootProject.file("secrets.gradle.kts"))
+if (rootProject.file("secrets.gradle.kts").exists()) {
+    apply(rootProject.file("secrets.gradle.kts"))
+}
 
 toolkitMultiversion {
     moveBuildsToRootProject.set(true)
@@ -85,9 +87,11 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 
-signing {
-    useGpgCmd()
-    sign(publishing.publications)
+if (findProperty("skipSigning") != "true") {
+    signing {
+        useGpgCmd()
+        sign(publishing.publications)
+    }
 }
 
 val createBundle = tasks.register<Zip>("createBundle") {
