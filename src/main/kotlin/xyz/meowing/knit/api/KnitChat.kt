@@ -1,0 +1,68 @@
+package xyz.meowing.knit.api
+
+import net.minecraft.text.Text
+import xyz.meowing.knit.api.KnitClient.client
+import xyz.meowing.knit.api.KnitPlayer.player
+import xyz.meowing.knit.api.text.internal.TextBuilder
+import kotlin.math.roundToInt
+
+object KnitChat {
+    @JvmStatic
+    fun sendMessage(message: String) {
+        player?.networkHandler?.sendChatMessage(message)
+    }
+
+    @JvmStatic
+    fun sendCommand(command: String) {
+        player?.networkHandler?.sendChatCommand(command.removePrefix("/"))
+    }
+
+    @JvmStatic
+    fun fakeMessage(message: TextBuilder) {
+        client.inGameHud?.chatHud?.addMessage(message.toVanilla())
+    }
+
+    @JvmStatic
+    fun fakeMessage(message: Text) {
+        client.inGameHud?.chatHud?.addMessage(message)
+    }
+
+    @JvmStatic
+    fun fakeMessage(message: String) {
+        fakeMessage(Text.literal(message))
+    }
+
+    @JvmStatic
+    fun getChatBreak(): String {
+        //#if MC == 1.21.11
+        val chatWidth = net.minecraft.client.gui.hud.ChatHud.getWidth(client.options.chatWidth.value)
+        //#elseif FABRIC
+        //$$ val chatWidth = client.inGameHud?.chatHud?.width ?: return ""
+        //#else
+        //$$ val chatWidth = client.gui?.chat?.width ?: return ""
+        //#endif
+        val textRenderer = client.textRenderer
+        val dashWidth = textRenderer.getWidth("-")
+
+        val repeatCount = chatWidth / dashWidth
+        return "-".repeat(repeatCount)
+    }
+
+    @JvmStatic
+    fun getCenteredText(text: String): String {
+        //#if MC == 1.21.11
+        val chatWidth = net.minecraft.client.gui.hud.ChatHud.getWidth(client.options.chatWidth.value)
+        //#elseif FABRIC
+        //$$ val chatWidth = client.inGameHud?.chatHud?.width ?: return text
+        //#else
+        //$$ val chatWidth = client.gui?.chat?.width ?: return text
+        //#endif
+        val textRenderer = client.textRenderer
+        val textWidth = textRenderer.getWidth(text)
+        if (textWidth >= chatWidth) return text
+        val spaceWidth = textRenderer.getWidth(" ")
+
+        val padding = ((chatWidth - textWidth) / 2f / spaceWidth).roundToInt()
+        return " ".repeat(padding) + text
+    }
+}
