@@ -1,4 +1,7 @@
 jdk:
   - openjdk21
+before_install:
+  - chmod +x gradlew
+  - ./gradlew --version
 install:
-  - gradle publishToMavenLocal -PskipSigning=true --no-daemon
+  - ./gradlew publishToMavenLocal -PskipSigning=true --no-daemon
