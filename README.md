@@ -34,14 +34,20 @@ Adding Knit to your project:
 
 ```kotlin
 repositories {
-    maven("https://jitpack.io")
+    maven { url = 'https://bllry.com/maven' }
+}
+dependencies {
+    implementation 'xyz.meowing:knit-1.21.11-fabric:119'
+}
+
+Or Kotlin DSL:
+repositories {
+    maven("https://bllry.com/maven")
 }
 
 dependencies {
-    // Replace TAG with the release version (e.g. 119)
-    // Replace MINECRAFT_VERSION-LOADER with your target (e.g. 1.21.11-fabric)
-    modImplementation("xyz.meowing:knit-MINECRAFT_VERSION-LOADER:TAG")
-}
+    implementation("xyz.meowing:knit-1.21.11-fabric:119")
+} 
 ```
 
 For example, for Minecraft 1.21.11 on Fabric:
