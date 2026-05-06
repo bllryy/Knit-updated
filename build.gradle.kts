@@ -76,6 +76,10 @@ afterEvaluate {
                 name = "Bundle"
                 url = uri(layout.buildDirectory.dir("central-bundle"))
             }
+            maven {
+                name = "SelfHosted"
+                url = uri("/var/www/maven")
+            }
         }
     }
 }

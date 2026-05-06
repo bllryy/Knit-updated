@@ -314,7 +314,9 @@ public abstract class MixinWorldRenderer implements WorldRendererAccess {
     //$$ }
     //#endif
 
-    //#if MC >= 1.21.5
+    //#if MC >= 1.21.11
+    //$$ @Inject(method = "renderLateDebug", at = @At("HEAD"))
+    //#elseif MC >= 1.21.5
     @Inject(
             method = "method_62214",
             at = @At(
@@ -396,7 +398,10 @@ public abstract class MixinWorldRenderer implements WorldRendererAccess {
         knit$context.postInvalidateRenderState();
     }
 
-    //#if MC >= 1.21.9
+    //#if MC >= 1.21.11
+    //$$ @Inject(at = @At("HEAD"), method = "renderWeather", cancellable = true)
+    //$$ private void knit$renderWeather(FrameGraphBuilder frameGraphBuilder, GpuBufferSlice fogBuffer, CallbackInfo ci) {
+    //#elseif MC >= 1.21.9
     //$$ @Inject(at = @At("HEAD"), method = "renderWeather", cancellable = true)
     //$$ private void knit$renderWeather(FrameGraphBuilder frameGraphBuilder, Vec3d cameraPos, GpuBufferSlice fogBuffer, CallbackInfo ci) {
     //#elseif MC >= 1.21.7
@@ -414,7 +419,10 @@ public abstract class MixinWorldRenderer implements WorldRendererAccess {
         }
     }
 
-    //#if MC >= 1.21.5
+    //#if MC >= 1.21.11
+    //$$ @Inject(at = @At("HEAD"), method = "renderClouds", cancellable = true)
+    //$$ private void knit$renderClouds(FrameGraphBuilder frameGraphBuilder, CloudRenderMode cloudRenderMode, Vec3d vec3d, long tickDelta, float f, int i, float g, CallbackInfo ci) {
+    //#elseif MC >= 1.21.5
     @Inject(at = @At("HEAD"), method = "renderClouds", cancellable = true)
     private void knit$renderClouds(FrameGraphBuilder frameGraphBuilder, CloudRenderMode cloudRenderMode, Vec3d vec3d, float f, int i, float g, CallbackInfo ci) {
         //#else
