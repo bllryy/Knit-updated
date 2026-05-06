@@ -314,7 +314,9 @@ public abstract class MixinWorldRenderer implements WorldRendererAccess {
     //$$ }
     //#endif
 
-    //#if MC >= 1.21.5
+    //#if MC >= 1.21.11
+    //$$ @Inject(method = "renderLateDebug", at = @At("HEAD"))
+    //#elseif MC >= 1.21.5
     @Inject(
             method = "method_62214",
             at = @At(
@@ -417,7 +419,10 @@ public abstract class MixinWorldRenderer implements WorldRendererAccess {
         }
     }
 
-    //#if MC >= 1.21.5
+    //#if MC >= 1.21.11
+    //$$ @Inject(at = @At("HEAD"), method = "renderClouds", cancellable = true)
+    //$$ private void knit$renderClouds(FrameGraphBuilder frameGraphBuilder, CloudRenderMode cloudRenderMode, Vec3d vec3d, long tickDelta, float f, int i, float g, CallbackInfo ci) {
+    //#elseif MC >= 1.21.5
     @Inject(at = @At("HEAD"), method = "renderClouds", cancellable = true)
     private void knit$renderClouds(FrameGraphBuilder frameGraphBuilder, CloudRenderMode cloudRenderMode, Vec3d vec3d, float f, int i, float g, CallbackInfo ci) {
         //#else
