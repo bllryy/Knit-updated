@@ -2,60 +2,22 @@ package xyz.meowing.knit.api.render
 
 import xyz.meowing.knit.api.KnitClient.client
 
-/**
- * @author: Deftu
- */
 object KnitResolution {
     object Window {
-        // LOGICAL window size (e.g. 1512x982 on a 2x Retina display), NOT the physical framebuffer.
-        // This is the coordinate space the GUI lays out and renders in, and the space the cursor
-        // (MouseHandler.xpos) reports in. In yarn this was Window.getWidth(); the official 26.1.2
-        // mapping for that same logical value is getScreenWidth() — getWidth() now returns the
-        // physical framebuffer. Using the physical value here made every GUI lay out at half its
-        // intended relative size on Retina. The DPI upscale happens in beginFrame, which sets the
-        // GL viewport to the physical framebuffer while NanoVG draws in this logical space.
-        val width: Int
-            get() {
-                return client.window.screenWidth
-            }
-
-        val height: Int
-            get() {
-                return client.window.screenHeight
-            }
+        val width: Int get() = client.window.getWidth()
+        val height: Int get() = client.window.getHeight()
     }
 
-
     object Viewport {
-        // PHYSICAL framebuffer size (yarn getFramebufferWidth() -> official getWidth()).
-        val width: Int
-            get() {
-                return client.window.width
-            }
-
-        val height: Int
-            get() {
-                return client.window.height
-            }
+        val width: Int get() = client.window.getWidth()
+        val height: Int get() = client.window.getHeight()
     }
 
     object Scaled {
-        val width: Int
-            get() {
-                return client.window.guiScaledWidth
-            }
-
-        val height: Int
-            get() {
-                return client.window.guiScaledHeight
-            }
-
-        val scaleFactor: Double
-            get() {
-                return client.window.guiScale.toDouble()
-            }
+        val width: Int get() = client.window.getGuiScaledWidth()
+        val height: Int get() = client.window.getGuiScaledHeight()
+        val scaleFactor: Double get() = client.window.getGuiScale().toDouble()
     }
-
 
     @JvmStatic
     val windowWidth: Int get() = Window.width

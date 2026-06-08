@@ -3,9 +3,6 @@ package xyz.meowing.knit.api.input
 import org.lwjgl.glfw.GLFW
 import com.mojang.blaze3d.platform.InputConstants
 
-/**
- * @author: Deftu
- */
 object KnitInputs {
     fun get(code: Int): KnitInputCode {
         return when {

@@ -8,8 +8,13 @@ import xyz.meowing.knit.api.text.core.HoverEvent
 import xyz.meowing.knit.api.text.core.ColorCodes
 import java.net.URI
 
+//#if FORGE-LIKE
+//$$ import net.minecraft.network.chat.Component as VanillaText
+//$$ import net.minecraft.network.chat.TextColor
+//#else
 import net.minecraft.network.chat.Component as VanillaText
 import net.minecraft.network.chat.TextColor
+//#endif
 
 class TextBuilder internal constructor(
     internal var text: String
@@ -176,7 +181,7 @@ class TextBuilder internal constructor(
         vanilla?.let { return it }
 
         val base = VanillaText.literal(text)
-        var style = base.style
+        var style = base.getStyle()
         color?.let {
             //#if MC >= 1.21.5
             style = style.withColor(TextColor.fromRgb(it))
@@ -214,9 +219,7 @@ class TextBuilder internal constructor(
             style = style.withHoverEvent(when (it) {
                 //#if MC >= 1.21.5
                 is HoverEvent.ShowText -> ModernHoverEvent.ShowText(it.text.build())
-                is HoverEvent.ShowItem -> ModernHoverEvent.ShowItem(
-                    net.minecraft.world.item.ItemStackTemplate.fromNonEmptyStack(it.stack)
-                )
+                is HoverEvent.ShowItem -> ModernHoverEvent.ShowItem(it.stack)
                 //#else
                 //$$ is HoverEvent.ShowText -> ModernHoverEvent(ModernHoverEvent.Action.SHOW_TEXT, it.text.build())
                 //$$ is HoverEvent.ShowItem -> {
@@ -233,9 +236,9 @@ class TextBuilder internal constructor(
             })
         }
 
-        val result = base.copy().setStyle(style)
-        siblings.forEach { result.append(it.build()) }
-        return result
+        base.setStyle(style)
+        siblings.forEach { base.append(it.build()) }
+        return base
     }
 
     fun toVanilla(): VanillaText {

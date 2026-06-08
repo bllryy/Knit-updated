@@ -2,7 +2,11 @@ package xyz.meowing.knit.api.text.internal
 
 import xyz.meowing.knit.api.text.KnitText
 
+//#if FORGE-LIKE
+//$$ import net.minecraft.network.chat.Component as VanillaText
+//#else
 import net.minecraft.network.chat.Component as VanillaText
+//#endif
 
 class ChainBuilder {
     private val parts = mutableListOf<TextBuilder>()

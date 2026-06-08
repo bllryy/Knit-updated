@@ -100,9 +100,9 @@ interface CommandParser<T> {
                             }
                             throw SyntaxException(
                                 //#if MC == 1.8.9
-                                "Invalid argument (valid arguments: ${enumMap.keys.joinToString(separator = ", ") { it }}) for command"
+                                //$$ "Invalid argument (valid arguments: ${enumMap.keys.joinToString(separator = ", ") { it }}) for command"
                                 //#else
-                                //$$ "Invalid argument for command"
+                                "Invalid argument for command"
                                 //#endif
                             )
                         }

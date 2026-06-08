@@ -2,7 +2,6 @@ package xyz.meowing.knit.api
 
 import xyz.meowing.knit.api.KnitClient.client
 import net.minecraft.client.player.LocalPlayer
-import net.minecraft.world.entity.EquipmentSlot
 import net.minecraft.world.item.ItemStack
 
 object KnitPlayer {
@@ -15,14 +14,8 @@ object KnitPlayer {
     @JvmStatic
     val armor: Array<ItemStack?>
         get() {
-            val p = player ?: return arrayOf(null, null, null, null)
-            // Order mirrors the old combined-inventory slots 36..39 = feet, legs, chest, head.
-            return arrayOf(
-                p.getItemBySlot(EquipmentSlot.FEET),
-                p.getItemBySlot(EquipmentSlot.LEGS),
-                p.getItemBySlot(EquipmentSlot.CHEST),
-                p.getItemBySlot(EquipmentSlot.HEAD)
-            )
+            val inv = player?.inventory ?: return arrayOf(null, null, null, null)
+            return arrayOf(inv.getItem(36), inv.getItem(37), inv.getItem(38), inv.getItem(39))
         }
 
     @JvmStatic

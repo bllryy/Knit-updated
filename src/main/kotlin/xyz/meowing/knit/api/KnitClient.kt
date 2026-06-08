@@ -1,3 +1,4 @@
+
 package xyz.meowing.knit.api
 
 import net.minecraft.client.Minecraft
@@ -13,13 +14,11 @@ import xyz.meowing.knit.api.loader.KnitLoader
 
 import net.minecraft.world.scores.DisplaySlot
 
-import net.fabricmc.loader.api.FabricLoader
-
 object KnitClient {
     private val tabListComparator: Comparator<PlayerInfo> = compareBy(
-        { it.gameMode == GameType.SPECTATOR },
-        { it.team?.name ?: "" },
-        { it.profile.name.lowercase() }
+        { it.getGameMode() == GameType.SPECTATOR },
+        { it.getTeam()?.name ?: "" },
+        { it.getProfile().name.lowercase() }
     )
 
     @JvmStatic
@@ -47,21 +46,25 @@ object KnitClient {
 
     @JvmStatic
     val gameDirectory: Path
-        get() = FabricLoader.getInstance().gameDir
+        get() {
+            return net.minecraft.client.Minecraft.getInstance().gameDirectory.toPath()
+        }
 
     @JvmStatic
     val configDirectory: Path
-        get() = FabricLoader.getInstance().configDir
+        get() {
+            return net.minecraft.client.Minecraft.getInstance().gameDirectory.toPath().resolve("config")
+        }
 
     @JvmStatic
     val tablist: List<PlayerInfo>
-        get() = client.connection
-            ?.listedOnlinePlayers
+        get() = client.getConnection()
+            ?.getListedOnlinePlayers()
             ?.sortedWith(tabListComparator) ?: emptyList()
 
     @JvmStatic
     val players: List<PlayerInfo>
-        get() = tablist.filter { it.profile.id.version() == 4 }
+        get() = tablist.filter { it.getProfile().id.version() == 4 }
 
     @JvmStatic
     val scoreboard: Collection<Component>
@@ -72,14 +75,14 @@ object KnitClient {
                 .sortedBy { -it.value() }
                 .map {
                     val ownerName = Component.literal(it.owner())
-                    val team = scoreboard.getPlayersTeam(it.owner())
+                    val team = scoreboard.getPlayerTeam(it.owner())
                     if (team == null) {
                         ownerName.copy()
                     } else {
                         Component.empty().also { main ->
-                            main.append(team.playerPrefix)
+                            main.append(team.getPlayerPrefix())
                             if (ownerName.string.isNotEmpty()) main.append(ownerName)
-                            main.append(team.playerSuffix)
+                            main.append(team.getPlayerSuffix())
                         }
                     }
                 }
@@ -87,3 +90,4 @@ object KnitClient {
 
     val scoreboardTitle get() = world?.scoreboard?.getDisplayObjective(DisplaySlot.SIDEBAR)?.displayName
 }
+

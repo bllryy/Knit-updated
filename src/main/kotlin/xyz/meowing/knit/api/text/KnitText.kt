@@ -4,7 +4,11 @@ import xyz.meowing.knit.api.text.internal.ChainBuilder
 import xyz.meowing.knit.api.text.internal.TextBuilder
 import xyz.meowing.knit.api.text.core.FormattingCodes
 
+//#if FORGE-LIKE
+//$$ import net.minecraft.network.chat.Component as VanillaText
+//#else
 import net.minecraft.network.chat.Component as VanillaText
+//#endif
 
 object KnitText {
     @JvmStatic

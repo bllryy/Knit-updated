@@ -26,7 +26,7 @@ public class MixinMinecraftClient {
         Knit.getEventBus().post(new ClientEvent.Start());
     }
 
-    @Inject(at = @At("RETURN"), method = "stop")
+    @Inject(at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;info(Ljava/lang/String;)V", shift = At.Shift.AFTER), method = "stop")
     private void zen$onClientStop(CallbackInfo ci) {
         Knit.getEventBus().post(new ClientEvent.Stop());
     }

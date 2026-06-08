@@ -1,15 +1,11 @@
 package xyz.meowing.knit.api
 
-/**
- * @author: Deftu
- */
+import org.lwjgl.glfw.GLFW
+import xyz.meowing.knit.api.KnitClient.client
+
 object KnitClipboard {
     @JvmStatic
     var string: String
-        get() {
-            return KnitClient.client.keyboardHandler.clipboard
-        }
-        set(value) {
-            KnitClient.client.keyboardHandler.clipboard = value
-        }
+        get() = GLFW.glfwGetClipboardString(client.window.handle()) ?: ""
+        set(value) { GLFW.glfwSetClipboardString(client.window.handle(), value) }
 }
